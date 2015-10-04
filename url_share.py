@@ -46,7 +46,6 @@ def store_url(req):
 
 @app.route('/', methods=['GET', 'POST'])
 def share_url():
-    print url_for('share_url')
     if request.method == 'POST':
         store_url(request)
 
