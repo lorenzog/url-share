@@ -13,6 +13,10 @@ another computer.
 import argparse
 
 from flask import Flask, request, render_template, url_for
+from werkzeug.serving import run_simple
+from werkzeug.wsgi import DispatcherMiddleware
+
+
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/urlsh'
 
@@ -64,11 +68,21 @@ def cleanup():
 # @app.route('/<path:path>', methods=['GET', 'POST'])
 # def catch_all(path):
 #         return 'You want path: %s' % path
+def simple(env, resp):
+    resp(b'200 OK', [(b'Content-Type', b'text/plain')])
+    return [b'Hello WSGI World']
 
+# point uwsgi/gunicorn/etc at this
+parent_app = DispatcherMiddleware(simple, {'/abc/123': app})
+
+# or run the dev server
 if __name__ == '__main__':
-    p = argparse.ArgumentParser()
-    p.add_argument('-d', '--debug', action='store_true')
-    args = p.parse_args()
-    if args.debug:
-        app.debug = True
-    app.run()
+    run_simple('localhost', 5000, parent_app)
+
+# if __name__ == '__main__':
+#     p = argparse.ArgumentParser()
+#     p.add_argument('-d', '--debug', action='store_true')
+#     args = p.parse_args()
+#     if args.debug:
+#         app.debug = True
+#     app.run()
