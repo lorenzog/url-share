@@ -12,8 +12,9 @@ another computer.
 
 import argparse
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 app = Flask(__name__)
+app.config['APPLICATION_ROOT'] = '/urlsh'
 
 urls = list()
 
@@ -39,6 +40,7 @@ def store_url(req):
 
 @app.route('/', methods=['GET', 'POST'])
 def share_url():
+    print url_for('share_url')
     if request.method == 'POST':
         store_url(request)
 
@@ -56,6 +58,12 @@ def cleanup():
     urls = []
     return return_all()
 
+
+# using a catch-all so I can deploy this behind a fixed url (e.g. /urlsh/)
+# @app.route('/', methods=['GET', 'POST'], defaults={'path': ''})
+# @app.route('/<path:path>', methods=['GET', 'POST'])
+# def catch_all(path):
+#         return 'You want path: %s' % path
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
