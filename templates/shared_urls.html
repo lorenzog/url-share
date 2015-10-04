@@ -5,16 +5,16 @@
     </head>
     <body>
         <p>
-        <a href="{{ path }}">Reload this page</a>
+        <a href="">Reload this page</a>
         </p>
         <p>
         <form action="{{ path }}" method="post">
             <input type="submit" value="Share"/>
             <label form="url">URL:</label>
-            <input type="text" name="url"/>
+            <input type="text" name="url" autofocus="True" />
         </form>
         <br>
-        <form action="{{ path }}/clean" method="post">
+        <form action="{{ cleanpath }}" method="post">
             <input type="submit" value="Remove all"/>
         </form>
         </p>

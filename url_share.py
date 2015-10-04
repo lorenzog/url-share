@@ -8,11 +8,13 @@ URL.
 Alternative use: perform a HTTP POST from a command-line tool like curl
 invoked e.g. from a terminal mail client like mutt, and open the URL on
 another computer.
+
+This page has no authentication; this is left to the web server.
 """
 
 import argparse
 
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, url_for, redirect
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 
@@ -48,41 +50,33 @@ def share_url():
     if request.method == 'POST':
         store_url(request)
 
-    return return_all()
-
-
-def return_all():
     # return the list, reversed
-    return render_template('shared_urls.html', urls=urls[::-1])
+    return render_template(
+        'shared_urls.html',
+        urls=urls[::-1],
+        path=url_for('share_url'),
+        cleanpath=url_for('cleanup'))
 
 
-@app.route('/clean', methods=['POST'])
+@app.route('/clean', methods=['GET', 'POST'])
 def cleanup():
-    global urls
-    urls = []
-    return return_all()
+    if request.method == 'POST':
+        global urls
+        urls = []
+    return redirect(url_for('share_url'))
 
+# point uwsgi/gunicorn/etc at parent_app
+parent_app = DispatcherMiddleware(Flask('urlshare'), {
+    app.config['APPLICATION_ROOT']: app,
+})
 
-# using a catch-all so I can deploy this behind a fixed url (e.g. /urlsh/)
-# @app.route('/', methods=['GET', 'POST'], defaults={'path': ''})
-# @app.route('/<path:path>', methods=['GET', 'POST'])
-# def catch_all(path):
-#         return 'You want path: %s' % path
-def simple(env, resp):
-    resp(b'200 OK', [(b'Content-Type', b'text/plain')])
-    return [b'Hello WSGI World']
-
-# point uwsgi/gunicorn/etc at this
-parent_app = DispatcherMiddleware(simple, {'/urlsh': app})
-
-# or run the dev server
+# for local development
+# thanks to: https://gist.github.com/rduplain/1705072
+# also: http://stackoverflow.com/a/18967744/204634
 if __name__ == '__main__':
-    run_simple('localhost', 5000, parent_app)
-
-# if __name__ == '__main__':
-#     p = argparse.ArgumentParser()
-#     p.add_argument('-d', '--debug', action='store_true')
-#     args = p.parse_args()
-#     if args.debug:
-#         app.debug = True
-#     app.run()
+    p = argparse.ArgumentParser()
+    p.add_argument('-d', '--debug', action='store_true')
+    args = p.parse_args()
+    if args.debug:
+        app.debug = True
+    run_simple('localhost', 5000, parent_app, use_reloader='True')
