@@ -15,6 +15,9 @@ Use:
 
 1. (as root) uwsgi --ini uwsgi.ini
 2. Tell your webserver to speak FastCGI to port 3031 for urls starting with 'urlsh' (see example httpd.conf for OpenBSD's httpd)
+3. Go to http://your_ip/urlsh/
+
+There is no authentication in this app. Use your webserver to do so. Also, consider using https if possible.
 
 Development:
 
