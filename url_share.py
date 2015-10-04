@@ -73,7 +73,7 @@ def simple(env, resp):
     return [b'Hello WSGI World']
 
 # point uwsgi/gunicorn/etc at this
-parent_app = DispatcherMiddleware(simple, {'/abc/123': app})
+parent_app = DispatcherMiddleware(simple, {'/urlsh': app})
 
 # or run the dev server
 if __name__ == '__main__':
