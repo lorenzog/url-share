@@ -14,7 +14,7 @@ Being the nerd you truly are, you set up a local HTTPS server in your LAN to sav
 
 (as the uwsgi user, if not existing create one)
 
-1  Check out this repository
+1.  Check out this repository
 1. Set up a virtualenv in this directory: `virtualenv venv`
 1. Activate the virtualenv: `source venv/bin/activate`
 1. Install requirements: `pip install -r requirements.txt`
