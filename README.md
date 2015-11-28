@@ -3,8 +3,13 @@ A simple web app to share URLs across a network
 
 Scenario:
 
-You're on twitter and want to save a link to read it later.
-There are a zillion ways to share stuff online, except none is pervasive and all require "cloud" storage. And let's be honest, the only thing everyone has is e-mail. So you have this link, but you don't want to e-mail it to yourself, perhaps because you don't want to have Yet Another E-mail.
+You're on twitter and want to save a link to read it later. Or you get something interesting from a colleague on your work e-mail and want to look at it later from home.
+
+There are a zillion ways to share stuff online, except all are pervasive, track what you do for the benefit of advertisers and all require "cloud" storage. So then you create another login. Or install another app. And if you want to share this with a family member that's not tech-savy it gets complicated so what you end up doing is -- sending an e-mail.
+
+What if you don't want to send another e-mail? What if you want to open a video on a tablet you share with other people and definitely don't want to log on your e-mail there?
+
+The answer is: you share this link on a stupid "web app".
 
 Being the nerd you truly are, you set up a local HTTPS server in your LAN to save URLs and list them on a web page:
 
@@ -14,7 +19,7 @@ Being the nerd you truly are, you set up a local HTTPS server in your LAN to sav
 
 (as the uwsgi user, if not existing create one)
 
-1.  Check out this repository
+1. Check out this repository
 1. Set up a virtualenv in this directory: `virtualenv venv`
 1. Activate the virtualenv: `source venv/bin/activate`
 1. Install requirements: `pip install -r requirements.txt`

@@ -74,8 +74,11 @@ parent_app = DispatcherMiddleware(Flask('urlshare'), {
 # also: http://stackoverflow.com/a/18967744/204634
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
+    p.add_argument('-i', '--ip', default="127.0.0.1")
+    p.add_argument('-p', '--port', default=5000)
     p.add_argument('-d', '--debug', action='store_true')
     args = p.parse_args()
     if args.debug:
         app.debug = True
-    run_simple('localhost', 5000, parent_app, use_reloader='True')
+    # run_simple('localhost', 5000, parent_app, use_reloader='True')
+    run_simple(args.ip, args.port, parent_app, use_reloader='True')
