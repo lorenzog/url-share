@@ -69,8 +69,6 @@ parent_app = DispatcherMiddleware(Flask('urlshare'), {
     app.config['APPLICATION_ROOT']: app,
 })
 
-app.debug = True
-
 # for local development
 # thanks to: https://gist.github.com/rduplain/1705072
 # also: http://stackoverflow.com/a/18967744/204634
